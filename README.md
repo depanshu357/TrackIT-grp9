@@ -12,12 +12,18 @@ You would have seen your parents or elders keeping track of how much money they 
 
 open the terminal in backend folder and run
 
-`npm install`
+`npm install --legacy-peer-deps`
 `node server.js`
+
+in the backend folder make file name ".env" and copy paste this info - 
+
+PORT=4000
+MONGO_URI=mongodb+srv://depanshusahu057:pOTGR16YkmqgfvMy@cluster0.drjcmse.mongodb.net/?retryWrites=true&w=majority
+SECRET=madebyinnocentandintrovert
 
 now open terminal in frontend folder and run
 
-`npm install`
+`npm install --legacy-peer-deps`
 `npm start`
 
 Runs the app in the development mode.\
