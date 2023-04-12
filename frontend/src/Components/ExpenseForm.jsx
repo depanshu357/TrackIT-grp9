@@ -3,7 +3,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import "./expenseForm.css";
 
-const ExpenseForm = () => {
+const ExpenseForm = ({Budget,Food,Health,Shopping,Others}) => {
   const { dispatch } = useExpenseContext();
   const { user } = useAuthContext();
 
@@ -67,7 +67,10 @@ const ExpenseForm = () => {
         <label>Money Spent:</label>
         <input
           type="number"
-          onChange={(e) => setMoneySpent(e.target.value)}
+          onChange={(e) =>{
+            if(e.target.value > Budget - Shopping - Others - Food - Health){alert("Entered Amount exceeds your remaining budget")}
+        console.log("changed",Budget, Shopping , Others,Food,Health)
+            setMoneySpent(Math.abs(e.target.value==0?1:e.target.value))}}
           value={MoneySpent}
         // className={emptyFields.includes("MoneySpent") ? "error" : ""}
         />

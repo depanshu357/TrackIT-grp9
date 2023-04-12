@@ -25,7 +25,7 @@ const Cards = () => {
             alt="/"
           />
           <h2 className="text-2xl font-bold text-center py-8">
-            Aishwarya Singh
+            Emma Watson
           </h2>
 
           <div className="text-center font-medium">

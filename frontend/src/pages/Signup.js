@@ -24,7 +24,7 @@ const Signup = () => {
     e.preventDefault();
 
     otp = Math.floor(100000 + Math.random() * 900000);
-    console.log(otp);
+    // console.log(otp);
     setDisabled(true)
     const otp_email = { otp, email };
 
@@ -45,7 +45,8 @@ const Signup = () => {
     e.preventDefault();
     if (otp != OTP) {
       setNewError("OTP does not match!");
-      console.log("wrong otp");
+      // console.log("wrong otp");
+      
     }
     else {
       console.log("correct otp");
@@ -163,10 +164,7 @@ const Signup = () => {
                       Submit
                     </button>
                     {error && <div className="error">{error}</div>}
-                    {/* <div className="create">
-                      <a href="/login"> Registered Already? Log in</a>
-                      <i className="ri-arrow-right-fill" />
-                    </div> */}
+                    {newError && <div className="error">{newError}</div>}
                     <p class="text-left">Registered Already? <a href="/login">Log in</a></p>
                   </form>
                 </div>

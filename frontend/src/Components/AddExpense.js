@@ -15,6 +15,8 @@ function AddExpense({ setShowPopup, showPopup }) {
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
+  
+
   const handleCutButton = () => {
     setShowPopup((e) => !e);
   };
@@ -89,7 +91,9 @@ function AddExpense({ setShowPopup, showPopup }) {
           <label>Money Spent:</label>
           <input
             type="number"
-            onChange={(e) => setMoneySpent(e.target.value)}
+          onChange={(e) => {
+
+                          setMoneySpent(Math.abs(e.target.value==0?1:e.target.value))}}
             value={MoneySpent}
           // className={emptyFields.includes("MoneySpent") ? "error" : ""}
           />

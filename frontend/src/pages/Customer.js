@@ -358,7 +358,7 @@ const Customer = () => {
       </div>
       <div className="home-customer-bot-expense">
         <div className="add-expense-home">
-          <ExpenseForm />
+          <ExpenseForm Budget={user.budget} Food={Food} Health={Health} Shopping={Shopping} Others={Others}/>
         </div>
         <div className="dues-history">
           <div className="expense-history-heading-cover">

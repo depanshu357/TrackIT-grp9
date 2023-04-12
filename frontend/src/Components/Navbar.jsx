@@ -19,7 +19,7 @@ const LNavbar = () => {
         <li className='p-4'><a style={{ cursor: 'pointer' }}>Home</a></li>
 
         <li className='p-4'>
-          <a style={{ cursor: 'pointer' }}>  <Link to="analytics" smooth={true} duration={600}>Features</Link></a>
+          <a style={{ cursor: 'pointer' }}>  <Link to="Features" smooth={true} duration={600}>Features</Link></a>
         </li>
         <li className='p-4'>
           <a style={{ cursor: 'pointer' }}><Link to="cards" smooth={true} duration={600}>Reviews</Link></a>

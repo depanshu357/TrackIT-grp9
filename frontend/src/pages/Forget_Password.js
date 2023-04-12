@@ -18,7 +18,7 @@ const Forget_Password = () => {
 
     setLock(true)
     otp = Math.floor(100000 + Math.random() * 900000);
-    console.log(otp);
+    // console.log(otp);
     setTemp(otp);
     const otp_email = { otp, email };
 
@@ -37,7 +37,7 @@ const Forget_Password = () => {
     // e.preventDefault();
     const updatePassword = { email, password };
     setIsLoading(true);
-    console.log(temp, Otp)
+    // console.log(temp, Otp)
     if ((temp.toString()) !== Otp) {
       setMessage("Wrong OTP");
     } else if (confirmPassword !== password) {
@@ -52,7 +52,7 @@ const Forget_Password = () => {
           headers: { "Content-Type": "application/json" },
         });
         const json = await response.json();
-        console.log(response)
+        // console.log(response)
         if (response.ok) {
           setMessage("Password successfully updated, Please go to Login Page");
         } else {
@@ -134,7 +134,7 @@ const Forget_Password = () => {
                     <a href="./">Back to Login</a>
                     <i className="ri-arrow-right-fill" />
                   </div> */}
-                    <p class="text-left">Back to <a href="./">Login</a></p>
+                    <p class="text-left">Back to <a href="/login">Login</a></p>
                     <div>{message}</div>
                   </form>
                 </div>
