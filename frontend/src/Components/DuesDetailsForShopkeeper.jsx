@@ -16,6 +16,7 @@ const DuesDetailsForShopkeeper = (props) => {
   // console.log(props.due.Paid)
   //  console.log(props.due.Paid)
   const handleChange = async (e) => {
+    if(props.due.Paid) return
     console.log(e.target);
     setPaid(!props.due.Paid);
     const due = { Paid: `${!props.due.Paid}` };

@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./AddExpense.css";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import "./expenseForm.css";
 function AddExpense({ setShowPopup, showPopup }) {
-  const { dispatch } = useExpenseContext();
+  const { expense,dispatch } = useExpenseContext();
   const { user } = useAuthContext();
 
   const [Item, setItem] = useState("");
   const [MoneySpent, setMoneySpent] = useState("");
   const [Description, setDescription] = useState("");
-  const [Date, setDate] = useState("");
+  const [datum, setDate] = useState("");
   const [Category, setCategory] = useState("Others");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
@@ -23,6 +23,179 @@ function AddExpense({ setShowPopup, showPopup }) {
 
   const options = ["Food", "Health", "Shopping", "Others"];
 
+  useEffect(() => {
+    const fetchExpense = async () => {
+      const response = await fetch("/api/expense", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({ type: "SET_EXPENSES", payload: json });
+      }
+    };
+
+    if (user) {
+      fetchExpense();
+      console.log(user.rollNo);
+    }
+  }, [dispatch, user]);
+
+  let month = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let data_to_show;
+  let Food = 0;
+  let Health = 0;
+  let Shopping = 0;
+  let Others = 0;
+  var date = new Date();
+  var current_month = date.getMonth();
+  var todays_date = date.getDate();
+  var current_year = date.getFullYear();
+  var total_data = [];
+  var last_ten_days_name = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  var last_ten_days_value = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var last_ten_days_data = [];
+  var piechart_data = [];
+  var bar_graph_progress = 0;
+  var total_budget = 20000;
+  for (let i = 1; i <= 12; i++) {
+    let temp = 0;
+    for (let j = 0; expense && j < expense.length; j++) {
+      // console.log(expense[j].Date[5] + expense[j].Date[6], current_month);
+      if (expense[j].Date[5] + expense[j].Date[6] == current_month + 1) {
+        bar_graph_progress += expense[j].MoneySpent;
+      }
+      if (expense[j].Date[5] + expense[j].Date[6] == i) {
+        temp += expense[j].MoneySpent;
+
+        if (todays_date >= 11) {
+          if (
+            expense[j].Date.substring(0, 4) == current_year &&
+            expense[j].Date[5] + expense[j].Date[6] == current_month + 1
+          ) {
+            if (
+              Number(todays_date) - Number(expense[j].Date.substring(8, 10)) <=
+                10 &&
+              Number(todays_date) - Number(expense[j].Date.substring(8, 10)) > 0
+            ) {
+              last_ten_days_name[
+                10 -
+                  (Number(todays_date) -
+                    Number(expense[j].Date.substring(8, 10)))
+              ] = expense[j].Date.substring(0, 10);
+              last_ten_days_value[
+                10 -
+                  (Number(todays_date) -
+                    Number(expense[j].Date.substring(8, 10)))
+              ] += expense[j].MoneySpent;
+            }
+          }
+        } else {
+          if (
+            expense[j].Date.substring(0, 4) == current_year &&
+            expense[j].Date[5] + expense[j].Date[6] == current_month + 1
+          ) {
+            if (
+              Number(todays_date) - Number(expense[j].Date.substring(8, 10)) <=
+                10 &&
+              Number(todays_date) - Number(expense[j].Date.substring(8, 10)) > 0
+            ) {
+              last_ten_days_name[
+                10 -
+                  (Number(todays_date) -
+                    Number(expense[j].Date.substring(8, 10)))
+              ] = expense[j].Date.substring(0, 10);
+              last_ten_days_value[
+                10 -
+                  (Number(todays_date) -
+                    Number(expense[j].Date.substring(8, 10)))
+              ] += expense[j].MoneySpent;
+            }
+          } else if (
+            expense[j].Date.substring(0, 4) == current_year &&
+            expense[j].Date[5] + expense[j].Date[6] == current_month
+          ) {
+            if (
+              current_month == 2 ||
+              current_month == 4 ||
+              current_month == 6 ||
+              current_month == 7 ||
+              current_month == 9 ||
+              current_month == 11
+            ) {
+              if (current_month == 2) {
+                if (
+                  Number(expense[j].Date.substring(8, 10)) >
+                  28 - (10 - todays_date + 1)
+                ) {
+                  last_ten_days_name[
+                    28 - Number(expense[j].Date.substring(8, 10)) - 2
+                  ] = expense[j].Date.substring(0, 10);
+                  last_ten_days_value[
+                    28 - Number(expense[j].Date.substring(8, 10)) - 2
+                  ] += expense[j].MoneySpent;
+                }
+              } else {
+                if (
+                  Number(expense[j].Date.substring(8, 10)) >
+                  30 - (10 - todays_date + 1)
+                ) {
+                  last_ten_days_name[
+                    30 - Number(expense[j].Date.substring(8, 10)) - 2
+                  ] = expense[j].Date.substring(0, 10);
+                  last_ten_days_value[
+                    30 - Number(expense[j].Date.substring(8, 10)) - 2
+                  ] += expense[j].MoneySpent;
+                }
+              }
+            } else {
+              if (
+                Number(expense[j].Date.substring(8, 10)) >
+                31 - (10 - todays_date + 1)
+              ) {
+                last_ten_days_name[
+                  31 - Number(expense[j].Date.substring(8, 10)) - 2
+                ] = expense[j].Date.substring(0, 10);
+                last_ten_days_value[
+                  31 - Number(expense[j].Date.substring(8, 10)) - 2
+                ] += expense[j].MoneySpent;
+              }
+            }
+          }
+        }
+
+        if (i == current_month + 1) {
+          if (expense[j].Category == "Food") {
+            Food += expense[j].MoneySpent;
+          }
+          if (expense[j].Category == "Health") {
+            Health += expense[j].MoneySpent;
+          }
+          if (expense[j].Category == "Shopping") {
+            Shopping += expense[j].MoneySpent;
+          }
+          if (expense[j].Category == "Others") {
+            Others += expense[j].MoneySpent;
+          }
+        }
+      }
+    }
+    total_data.push({ name: month[i - 1], value: temp });
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,11 +204,11 @@ function AddExpense({ setShowPopup, showPopup }) {
       return;
     }
 
-    const expense = { Item, MoneySpent, Description, Date, Category };
+    const expenseS = { Item, MoneySpent, Description, Date, Category };
 
     const response = await fetch("/api/expense", {
       method: "POST",
-      body: JSON.stringify(expense),
+      body: JSON.stringify(expenseS),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
@@ -91,9 +264,10 @@ function AddExpense({ setShowPopup, showPopup }) {
           <label>Money Spent:</label>
           <input
             type="number"
-          onChange={(e) => {
-
-                          setMoneySpent(Math.abs(e.target.value==0?1:e.target.value))}}
+            onChange={(e) =>{
+              if(e.target.value > user.budget - Shopping - Others - Food - Health){alert("Entered Amount exceeds your remaining budget")}
+          console.log("changed",user.budget, Shopping , Others,Food,Health)
+              setMoneySpent(Math.abs(e.target.value==0?1:e.target.value))}}
             value={MoneySpent}
           // className={emptyFields.includes("MoneySpent") ? "error" : ""}
           />
@@ -112,7 +286,7 @@ function AddExpense({ setShowPopup, showPopup }) {
           <input
             type="date"
             onChange={(e) => setDate(e.target.value)}
-            value={Date}
+            value={datum}
           // className={emptyFields.includes("Date") ? "error" : ""}
           />
         </div>
